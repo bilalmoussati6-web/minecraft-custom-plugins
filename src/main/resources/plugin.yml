@@ -1,19 +1,19 @@
-name: SoulItem
+name: firepickaxe
 version: 1.0.0
-main: com.example.soulitem.SoulItemPlugin
-api-version: 1.21.4
+main: com.example.soulitem.firepickaxePlugin
+api-version: 1.21.1
 author: Notch
 description: >-
-  REAL custom item plugin (NOT a texture pack). Registers the "soul_blade"
+  REAL custom item plugin (NOT a texture pack). Registers the "fire_pickaxe"
   item server-side via PersistentDataContainer NBT tags. Without this plugin,
-  the item is just a regular DIAMOND_SWORD. With the plugin, it becomes
-  "soul_blade" with all configured abilities, attributes and recipes.
+  the item is just a regular NETHERITE_PICKAXE. With the plugin, it becomes
+  "fire_pickaxe" with all configured abilities, attributes and recipes.
 commands:
-  givesoulitem:
-    description: Gives you the real soul_blade custom item (registered by this plugin via PersistentDataContainer)
-    usage: /givesoulitem [player]
-    permission: soulitem.give
+  fire:
+    description: Gives you the real fire_pickaxe custom item (registered by this plugin via PersistentDataContainer)
+    usage: /fire [player]
+    permission: firepickaxe.give
 permissions:
-  soulitem.give:
+  firepickaxe.give:
     description: Allows giving the custom item
     default: op
