@@ -1,0 +1,19 @@
+name: SoulItem
+version: 1.0.0
+main: com.example.soulitem.SoulItemPlugin
+api-version: 1.21.4
+author: Notch
+description: >-
+  REAL custom item plugin (NOT a texture pack). Registers the "soul_blade"
+  item server-side via PersistentDataContainer NBT tags. Without this plugin,
+  the item is just a regular DIAMOND_SWORD. With the plugin, it becomes
+  "soul_blade" with all configured abilities, attributes and recipes.
+commands:
+  givesoulitem:
+    description: Gives you the real soul_blade custom item (registered by this plugin via PersistentDataContainer)
+    usage: /givesoulitem [player]
+    permission: soulitem.give
+permissions:
+  soulitem.give:
+    description: Allows giving the custom item
+    default: op
