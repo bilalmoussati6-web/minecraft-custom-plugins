@@ -22,23 +22,23 @@ import java.util.UUID;
  *
  * HOW THIS IS A REAL CUSTOM ITEM (not a texture pack):
  * - Every item created by createItem() has a PersistentDataContainer tag:
- *     key = plugin's NamespacedKey, value = "soul_blade"
+ *     key = plugin's NamespacedKey, value = "fire_pickaxe"
  * - isCustomItem() checks for this NBT tag. If the tag is present, it's OUR
- *   custom item — not a regular DIAMOND_SWORD.
- * - Without the NBT tag, a DIAMOND_SWORD is just vanilla. With the tag,
- *   the plugin treats it as "soul_blade" and fires all abilities.
+ *   custom item — not a regular NETHERITE_PICKAXE.
+ * - Without the NBT tag, a NETHERITE_PICKAXE is just vanilla. With the tag,
+ *   the plugin treats it as "fire_pickaxe" and fires all abilities.
  * - CustomModelData is OPTIONAL — it only changes the visual texture when
  *   paired with the resource pack in resourcepack/. The plugin works 100%
- *   without any resource pack (item will just look like DIAMOND_SWORD).
+ *   without any resource pack (item will just look like NETHERITE_PICKAXE).
  *
  * Uses reflective lookups for Attribute and Enchantment names so the same
  * plugin works across multiple Spigot/Paper versions where enum names change.
  */
 public class CustomItemManager {
 
-    private final SoulItemPlugin plugin;
+    private final firepickaxePlugin plugin;
 
-    public CustomItemManager(SoulItemPlugin plugin) {
+    public CustomItemManager(firepickaxePlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -68,22 +68,21 @@ public class CustomItemManager {
             // === BASE ITEM MODE ===
             // The base material is the visual fallback. The REAL identity of
             // this item is the PersistentDataContainer tag added below.
-            Material base = matchMaterial("DIAMOND_SWORD", Material.DIAMOND_SWORD);
+            Material base = matchMaterial("NETHERITE_PICKAXE", Material.DIAMOND_SWORD);
             item = new ItemStack(base);
             meta = item.getItemMeta();
             if (meta == null) return item;
         }
 
-        meta.setDisplayName("§5§lSoul Blade");
+        meta.setDisplayName("fire pickaxe");
 
         List<String> loreList = new ArrayList<>();
-        loreList.add("§7A item forged from darkness");
-        loreList.add("§cRight-click to summon lightning!");
+        loreList.add("smelt ores");
         if (!loreList.isEmpty()) meta.setLore(loreList);
 
         // Custom model data is OPTIONAL — only used by the resource pack
-        // to swap the vanilla DIAMOND_SWORD texture with a custom one.
-        // The plugin works 100% without it (item will look like DIAMOND_SWORD).
+        // to swap the vanilla NETHERITE_PICKAXE texture with a custom one.
+        // The plugin works 100% without it (item will look like NETHERITE_PICKAXE).
         try { meta.setCustomModelData(1001); } catch (Throwable ignored) {}
 
         meta.setUnbreakable(true);
@@ -95,24 +94,22 @@ public class CustomItemManager {
         addAttr(meta, "GENERIC_ATTACK_SPEED", -2.400d, "HAND");
 
         // Enchantments
-        addEnchant(meta, "sharpness", 5);
-        addEnchant(meta, "unbreaking", 3);
-        addEnchant(meta, "fire_aspect", 2);
+        // no enchantments
 
         // THIS IS WHAT MAKES IT A REAL CUSTOM ITEM:
         // We stamp it with a plugin-owned PersistentDataContainer tag. This tag
         // is the item's true identity — it's what the plugin uses to recognize
-        // "soul_blade" among all the other DIAMOND_SWORDs in the world.
-        // Without this tag, a DIAMOND_SWORD is just vanilla. With it, it's
+        // "fire_pickaxe" among all the other NETHERITE_PICKAXEs in the world.
+        // Without this tag, a NETHERITE_PICKAXE is just vanilla. With it, it's
         // our custom item with abilities, attributes, and recipes.
-        meta.getPersistentDataContainer().set(plugin.getItemKey(), PersistentDataType.STRING, "soul_blade");
+        meta.getPersistentDataContainer().set(plugin.getItemKey(), PersistentDataType.STRING, "fire_pickaxe");
 
         item.setItemMeta(meta);
         return item;
     }
 
     /**
-     * Returns true if this ItemStack is the real "soul_blade" custom item.
+     * Returns true if this ItemStack is the real "fire_pickaxe" custom item.
      * The check uses the PersistentDataContainer NBT tag, NOT CustomModelData
      * or display name. This is what makes this a real plugin, not a texture pack.
      */
@@ -122,7 +119,7 @@ public class CustomItemManager {
         if (meta == null) return false;
         // Check for the plugin's custom NBT tag.
         String v = meta.getPersistentDataContainer().get(plugin.getItemKey(), PersistentDataType.STRING);
-        return "soul_blade".equals(v);
+        return "fire_pickaxe".equals(v);
     }
 
     // ---- helpers ----
@@ -151,7 +148,7 @@ public class CustomItemManager {
             AttributeModifier mod;
             try {
                 // Newer constructor (1.21+) takes NamespacedKey.
-                NamespacedKey key = new NamespacedKey(SoulItemPlugin.getInstance(), attrName.toLowerCase());
+                NamespacedKey key = new NamespacedKey(firepickaxePlugin.getInstance(), attrName.toLowerCase());
                 mod = AttributeModifier.class
                         .getConstructor(NamespacedKey.class, double.class, AttributeModifier.Operation.class, EquipmentSlot.class)
                         .newInstance(key, amount, AttributeModifier.Operation.ADD_NUMBER, slot);
