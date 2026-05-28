@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GiveCommand implements CommandExecutor {
 
-    private final SoulItemPlugin plugin;
+    private final firepickaxePlugin plugin;
 
-    public GiveCommand(SoulItemPlugin plugin) {
+    public GiveCommand(firepickaxePlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -29,15 +29,15 @@ public class GiveCommand implements CommandExecutor {
         } else if (sender instanceof Player p) {
             target = p;
         } else {
-            sender.sendMessage("§cUsage: /givesoulitem <player>");
+            sender.sendMessage("§cUsage: /fire <player>");
             return true;
         }
 
         ItemStack item = plugin.getItemManager().createItem();
         target.getInventory().addItem(item);
-        target.sendMessage("§aYou received the real soul_blade custom item (NBT-stamped by the plugin)!");
+        target.sendMessage("§aYou received the real fire_pickaxe custom item (NBT-stamped by the plugin)!");
         if (sender != target) {
-            sender.sendMessage("§aGave the real soul_blade to " + target.getName());
+            sender.sendMessage("§aGave the real fire_pickaxe to " + target.getName());
         }
         return true;
     }
