@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example.soulitem</groupId>
-    <artifactId>SoulItem</artifactId>
+    <artifactId>firepickaxe</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21.4-R0.1-SNAPSHOT</version>
+            <version>1.21.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -42,7 +42,7 @@
     </dependencies>
 
     <build>
-        <finalName>SoulItem-1.0.0</finalName>
+        <finalName>firepickaxe-1.0.0</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
