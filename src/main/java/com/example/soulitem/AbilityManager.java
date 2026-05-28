@@ -47,11 +47,11 @@ import java.util.UUID;
 
 public class AbilityManager implements Listener {
 
-    private final SoulItemPlugin plugin;
+    private final firepickaxePlugin plugin;
     // Per-player, per-ability cooldown tracking.
     private final Map<UUID, Map<String, Long>> cooldowns = new HashMap<>();
 
-    public AbilityManager(SoulItemPlugin plugin) {
+    public AbilityManager(firepickaxePlugin plugin) {
         this.plugin = plugin;
         startPassiveTask();
     }
@@ -72,30 +72,7 @@ public class AbilityManager implements Listener {
         ItemStack item = p.getInventory().getItemInMainHand();
         if (!plugin.getItemManager().isCustomItem(item)) return;
         if (!(e.getEntity() instanceof LivingEntity target)) return;
-        // SHARPNESS - generic ability (auto-generated fallback)
-        if (!onCooldown(p, "SHARPNESS", 0)) {
-            // Visual feedback that ability triggered
-            p.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, p.getLocation().add(0,1,0), 20, 0.5, 0.5, 0.5, 0.1);
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.5f);
-            // Optional: deal damage to nearby enemies
-            for (Entity nearby : p.getNearbyEntities(3, 3, 3)) {
-                if (nearby instanceof LivingEntity le && le != p) {
-                    le.damage(3, p);
-                }
-            }
-        }
-        // FIRE_ASPECT - generic ability (auto-generated fallback)
-        if (!onCooldown(p, "FIRE_ASPECT", 0)) {
-            // Visual feedback that ability triggered
-            p.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, p.getLocation().add(0,1,0), 20, 0.5, 0.5, 0.5, 0.1);
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.5f);
-            // Optional: deal damage to nearby enemies
-            for (Entity nearby : p.getNearbyEntities(2, 2, 2)) {
-                if (nearby instanceof LivingEntity le && le != p) {
-                    le.damage(2, p);
-                }
-            }
-        }
+
     }
 
     @EventHandler
@@ -105,18 +82,7 @@ public class AbilityManager implements Listener {
         ItemStack item = p.getInventory().getItemInMainHand();
         if (!plugin.getItemManager().isCustomItem(item)) return;
         LivingEntity target = e.getEntity();
-        // LOOTING - generic ability (auto-generated fallback)
-        if (!onCooldown(p, "LOOTING", 0)) {
-            // Visual feedback that ability triggered
-            p.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, p.getLocation().add(0,1,0), 20, 0.5, 0.5, 0.5, 0.1);
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.5f);
-            // Optional: deal damage to nearby enemies
-            for (Entity nearby : p.getNearbyEntities(3, 3, 3)) {
-                if (nearby instanceof LivingEntity le && le != p) {
-                    le.damage(3, p);
-                }
-            }
-        }
+
     }
 
     @EventHandler
@@ -128,7 +94,8 @@ public class AbilityManager implements Listener {
 
         if (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) {
             if (p.isSneaking()) {
-
+                // Portable Workbench
+                if (!onCooldown(p, "OPEN_WORKBENCH", 0)) p.openWorkbench(null, true);
             } else {
 
             }
@@ -151,7 +118,31 @@ public class AbilityManager implements Listener {
         ItemStack item = p.getInventory().getItemInMainHand();
         if (!plugin.getItemManager().isCustomItem(item)) return;
         Block block = e.getBlock();
-
+        // FORTUNE - generic ability (auto-generated fallback)
+        if (!onCooldown(p, "FORTUNE", 0)) {
+            // Visual feedback that ability triggered
+            p.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, p.getLocation().add(0,1,0), 20, 0.5, 0.5, 0.5, 0.1);
+            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.5f);
+            // Optional: deal damage to nearby enemies
+            for (Entity nearby : p.getNearbyEntities(3, 3, 3)) {
+                if (nearby instanceof LivingEntity le && le != p) {
+                    le.damage(3, p);
+                }
+            }
+        }
+        // Auto Smelt (basic ores)
+        Material drop = block.getType();
+        ItemStack smelted = switch (drop) {
+            case IRON_ORE, DEEPSLATE_IRON_ORE -> new ItemStack(Material.IRON_INGOT);
+            case GOLD_ORE, DEEPSLATE_GOLD_ORE -> new ItemStack(Material.GOLD_INGOT);
+            case COPPER_ORE, DEEPSLATE_COPPER_ORE -> new ItemStack(Material.COPPER_INGOT);
+            case ANCIENT_DEBRIS -> new ItemStack(Material.NETHERITE_SCRAP);
+            default -> null;
+        };
+        if (smelted != null) {
+            e.setDropItems(false);
+            block.getWorld().dropItemNaturally(block.getLocation(), smelted);
+        }
     }
 
     private void startPassiveTask() {
