@@ -13,21 +13,18 @@ import java.util.List;
 
 public class RecipeManager {
 
-    private final SoulItemPlugin plugin;
+    private final firepickaxePlugin plugin;
     private final List<NamespacedKey> registeredKeys = new ArrayList<>();
 
-    public RecipeManager(SoulItemPlugin plugin) {
+    public RecipeManager(firepickaxePlugin plugin) {
         this.plugin = plugin;
     }
 
     public void registerRecipes() {
         try {
-        NamespacedKey key = new NamespacedKey(plugin, "soul_blade_recipe");
-        ShapedRecipe recipe = new ShapedRecipe(key, plugin.getItemManager().createItem());
-        recipe.shape("AA ", "AB ", " C ");
-        recipe.setIngredient('A', Material.matchMaterial("DIAMOND"));
-        recipe.setIngredient('B', Material.matchMaterial("BLAZE_ROD"));
-        recipe.setIngredient('C', Material.matchMaterial("STICK"));
+        NamespacedKey key = new NamespacedKey(plugin, "fire_pickaxe_recipe");
+        FurnaceRecipe recipe = new FurnaceRecipe(key, plugin.getItemManager().createItem(),
+                Material.matchMaterial("OBSIDIAN"), 5.7f, 101);
         Bukkit.addRecipe(recipe);
         registeredKeys.add(key);
         } catch (Throwable t) {
